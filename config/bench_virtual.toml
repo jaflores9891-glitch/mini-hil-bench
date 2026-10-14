@@ -1,0 +1,48 @@
+# Virtual bench: plant model, fault gateway and AEB ECU run in one Python process,
+# connected through python-can virtual buses. All values are SI units.
+backend = "virtual"
+
+[simulation]
+step_s = 0.01
+seed = 42
+real_time = false
+
+[can]
+dbc_path = "../dbc/aeb.dbc"
+channel_prefix = "mini-hil"
+log_dir = "../reports/logs"
+
+[vehicle]
+brake_time_constant_s = 0.15
+max_decel_mps2 = 10.0
+
+[radar]
+noise_std_m = 0.05
+latency_steps = 2
+max_range_m = 120.0
+
+[ecu]
+min_speed_mps = 2.7778          # 10 km/h
+standstill_speed_mps = 0.1
+ttc_warning_s = 2.6
+ttc_partial_s = 1.6
+ttc_full_s = 0.9
+partial_decel_mps2 = 4.0
+full_decel_mps2 = 9.0
+radar_timeout_s = 0.1
+alive_counter_max_repeats = 3
+
+# Variable mapping: logical name used by the tests -> source on this backend.
+# "model:<name>" is a plant model variable; "can:<Message>.<Signal>" is a decoded CAN
+# signal as seen on the ECU side of the fault gateway.
+[variables]
+"ego.speed_mps" = "model:ego.speed_mps"
+"ego.accel_mps2" = "model:ego.accel_mps2"
+"lead.speed_mps" = "model:lead.speed_mps"
+"plant.gap_m" = "model:plant.gap_m"
+"plant.ttc_s" = "model:plant.ttc_s"
+"radar.distance_m" = "can:RadarObject.ObjDistance"
+"radar.valid" = "can:RadarObject.ObjValid"
+"ecu.aeb_state" = "can:AebCommand.AebState"
+"ecu.decel_request_mps2" = "can:AebCommand.DecelRequest"
+"ecu.brake_request" = "can:AebCommand.BrakeRequest"
