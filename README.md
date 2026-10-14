@@ -1,6 +1,6 @@
 # mini-hil-bench
 
-![CI](https://github.com/<your-github-user>/mini-hil-bench/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/jaflores9891-glitch/mini-hil-bench/actions/workflows/ci.yml/badge.svg)
 
 A small virtual **Hardware-in-the-Loop bench** for an **Automatic Emergency Braking (AEB) ECU**
 on CAN. It includes a plant model (vehicle, lead object, radar), a virtual ECU, a CAN fault
@@ -38,7 +38,7 @@ Requires Python 3.11+ and git.
 **Linux / macOS**
 
 ```bash
-git clone https://github.com/<your-github-user>/mini-hil-bench.git
+git clone https://github.com/jaflores9891-glitch/mini-hil-bench.git
 cd mini-hil-bench
 python3 -m venv .venv
 source .venv/bin/activate
@@ -49,7 +49,7 @@ pytest
 **Windows (PowerShell)**
 
 ```powershell
-git clone https://github.com/<your-github-user>/mini-hil-bench.git
+git clone https://github.com/jaflores9891-glitch/mini-hil-bench.git
 cd mini-hil-bench
 py -3 -m venv .venv
 .venv\Scripts\Activate.ps1
