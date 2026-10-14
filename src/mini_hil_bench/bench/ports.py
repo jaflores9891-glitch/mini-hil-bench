@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from pathlib import Path
 from types import TracebackType
 
 import pandas as pd
@@ -125,6 +126,11 @@ class Bench(ABC):
     @abstractmethod
     def faults(self) -> FaultInjectionPort:
         """Fault injection port."""
+
+    @property
+    @abstractmethod
+    def log_path(self) -> Path:
+        """Path of the CAN log (BLF) recorded while the bench runs."""
 
     @abstractmethod
     def start(self) -> None:

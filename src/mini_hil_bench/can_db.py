@@ -69,6 +69,14 @@ class CanDatabase:
             raise BenchConfigError(f"Message {message_name} has no GenMsgCycleTime")
         return cycle_ms / MS_PER_S
 
+    def message_names(self) -> list[str]:
+        """Return the names of all messages in the DBC.
+
+        Returns:
+            Message names in DBC order.
+        """
+        return [message.name for message in self._db.messages]
+
     def signal_names(self, message_name: str) -> list[str]:
         """Return the signal names of a message.
 

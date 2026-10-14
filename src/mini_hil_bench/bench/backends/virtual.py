@@ -17,6 +17,7 @@ import math
 import re
 import time
 from collections.abc import Callable
+from pathlib import Path
 
 import can
 import pandas as pd
@@ -299,7 +300,7 @@ class VirtualBench(Bench):
         self._config = config
         self._db = CanDatabase(config.can.dbc_path)
         safe_name = re.sub(r"[^A-Za-z0-9_.-]+", "_", test_name).strip("_")
-        self.log_path = config.can.log_dir / f"{safe_name}.blf"
+        self._log_path = config.can.log_dir / f"{safe_name}.blf"
         self._channel = f"{config.can.channel_prefix}-{next(_bench_ids)}"
         self.variables = list(config.variables)
         self.history: list[list[float]] = []
@@ -327,6 +328,11 @@ class VirtualBench(Bench):
         return self._gateway
 
     @property
+    def log_path(self) -> Path:
+        """Path of the BLF log of this bench."""
+        return self._log_path
+
+    @property
     def now_s(self) -> float:
         """Current simulated time."""
         return self._step * self._config.simulation.step_s
@@ -338,10 +344,10 @@ class VirtualBench(Bench):
             self._buses[side] = can.Bus(
                 interface="virtual", channel=channel, preserve_timestamps=True
             )
-        self.log_path.parent.mkdir(parents=True, exist_ok=True)
-        self._writer = can.BLFWriter(self.log_path)
+        self._log_path.parent.mkdir(parents=True, exist_ok=True)
+        self._writer = can.BLFWriter(self._log_path)
         self._gateway = FaultGateway(self._db, [self._writer, self._signals])
-        logger.info("Virtual bench started, logging to %s", self.log_path)
+        logger.info("Virtual bench started, logging to %s", self._log_path)
 
     def stop(self) -> None:
         """Close the log and the buses. Safe to call more than once."""
