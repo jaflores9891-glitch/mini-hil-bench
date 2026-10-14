@@ -1,0 +1,39 @@
+VERSION ""
+
+
+NS_ :
+
+BS_:
+
+BU_: PLANT AEB_ECU
+
+
+BO_ 256 VehicleState: 8 PLANT
+ SG_ EgoSpeed : 0|16@1+ (0.01,0) [0|300] "km/h" AEB_ECU
+ SG_ EgoAccel : 16|16@1- (0.001,0) [-20|20] "m/s^2" AEB_ECU
+
+BO_ 272 RadarObject: 8 PLANT
+ SG_ ObjDistance : 0|16@1+ (0.01,0) [0|250] "m" AEB_ECU
+ SG_ ObjRelSpeed : 16|16@1- (0.01,0) [-100|100] "m/s" AEB_ECU
+ SG_ ObjValid : 32|1@1+ (1,0) [0|1] "" AEB_ECU
+ SG_ RadarAliveCounter : 36|4@1+ (1,0) [0|15] "" AEB_ECU
+
+BO_ 512 AebCommand: 8 AEB_ECU
+ SG_ AebState : 0|4@1+ (1,0) [0|5] "" PLANT
+ SG_ DecelRequest : 8|16@1+ (0.001,0) [0|20] "m/s^2" PLANT
+ SG_ BrakeRequest : 24|1@1+ (1,0) [0|1] "" PLANT
+
+
+CM_ BO_ 256 "Ego vehicle state sent by the plant.";
+CM_ BO_ 272 "Closest in-path object reported by the front radar.";
+CM_ BO_ 512 "AEB function output to the brake system.";
+CM_ SG_ 272 ObjRelSpeed "Object speed minus ego speed; negative means closing.";
+CM_ SG_ 512 DecelRequest "Requested deceleration magnitude (positive value).";
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 10000;
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_ "GenMsgCycleTime" BO_ 256 10;
+BA_ "GenMsgCycleTime" BO_ 272 20;
+BA_ "GenMsgCycleTime" BO_ 512 10;
+VAL_ 272 ObjValid 0 "Invalid" 1 "Valid" ;
+VAL_ 512 AebState 0 "OFF" 1 "STANDBY" 2 "WARNING" 3 "PARTIAL_BRAKE" 4 "FULL_BRAKE" 5 "FAULT" ;
+VAL_ 512 BrakeRequest 0 "NoBrake" 1 "Brake" ;
