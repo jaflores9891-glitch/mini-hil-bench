@@ -1,0 +1,38 @@
+# dSPACE bench - TEMPLATE, NOT VALIDATED (no dSPACE license available).
+# Model paths below are placeholders: replace them with the paths of the real model.
+backend = "dspace"
+
+[simulation]
+step_s = 0.01                   # model task period on the platform
+seed = 42
+real_time = true                # a dSPACE platform always runs in real time
+
+[dspace]
+platform = "VEOS"               # or the name of the SCALEXIO system
+xil_port_config = "dspace_maport_config.xml"   # MAPort configuration file (not provided)
+
+# ECU calibration expected by the tests (must match the ECU under test).
+[ecu]
+min_speed_mps = 2.7778
+standstill_speed_mps = 0.1
+ttc_warning_s = 2.6
+ttc_partial_s = 1.6
+ttc_full_s = 0.9
+partial_decel_mps2 = 4.0
+full_decel_mps2 = 9.0
+radar_timeout_s = 0.1
+alive_counter_max_repeats = 3
+
+# Variable mapping: same logical names as bench_virtual.toml, mapped to model paths.
+[variables]
+"ego.speed_mps" = "Model Root/Vehicle/v_ego"
+"ego.accel_mps2" = "Model Root/Vehicle/a_ego"
+"bus.ego_speed_kph" = "Model Root/CAN/VehicleState/EgoSpeed"
+"lead.speed_mps" = "Model Root/Environment/LeadObject/v_lead"
+"plant.gap_m" = "Model Root/Environment/gap"
+"plant.ttc_s" = "Model Root/Environment/ttc"
+"radar.distance_m" = "Model Root/CAN/RadarObject/ObjDistance"
+"radar.valid" = "Model Root/CAN/RadarObject/ObjValid"
+"ecu.aeb_state" = "Model Root/CAN/AebCommand/AebState"
+"ecu.decel_request_mps2" = "Model Root/CAN/AebCommand/DecelRequest"
+"ecu.brake_request" = "Model Root/CAN/AebCommand/BrakeRequest"
