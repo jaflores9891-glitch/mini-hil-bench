@@ -125,7 +125,7 @@ def _build(cls: type[_ConfigT], data: dict[str, Any], name: str) -> _ConfigT:
         BenchConfigError: If keys are missing/unknown or a value has the wrong type.
     """
     section = _section(data, name)
-    declared = {f.name: f.type for f in fields(cls)}  # type: ignore[arg-type]
+    declared = {f.name: f.type for f in fields(cls)}
     unknown = set(section) - set(declared)
     if unknown:
         raise BenchConfigError(f"Unknown keys in [{name}]: {sorted(unknown)}")
