@@ -38,6 +38,7 @@ alive_counter_max_repeats = 3
 [variables]
 "ego.speed_mps" = "model:ego.speed_mps"
 "ego.accel_mps2" = "model:ego.accel_mps2"
+"bus.ego_speed_kph" = "can:VehicleState.EgoSpeed"
 "lead.speed_mps" = "model:lead.speed_mps"
 "plant.gap_m" = "model:plant.gap_m"
 "plant.ttc_s" = "model:plant.ttc_s"
